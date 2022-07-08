@@ -1,5 +1,9 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Links to the AWS app
+
+- cloudfront: d1i0sqx290emnj.cloudfront.net
+
 ## Available Scripts
 
 In the project directory, you can run:  
