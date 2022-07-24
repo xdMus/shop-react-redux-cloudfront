@@ -11,6 +11,8 @@ import Typography from '@material-ui/core/Typography';
 import API_PATHS from 'constants/apiPaths';
 
 const Form = (props: FormikProps<FormikValues>) => {
+	const history = useHistory();
+
 	const {
 		// values,
 		// touched,
@@ -33,6 +35,10 @@ const Form = (props: FormikProps<FormikValues>) => {
 		// onGetCitizen,
 		// shouldConfirmLeave,
 	} = props;
+
+	const handleCancel = () => {
+		history.push('/admin/products');
+	};
 
 	return (
 		<form onSubmit={handleSubmit} autoComplete="off">
@@ -79,7 +85,9 @@ const Form = (props: FormikProps<FormikValues>) => {
 					/>
 				</Grid>
 				<Grid item container xs={12} justify="space-between">
-					<Button color="primary">Cancel</Button>
+					<Button onClick={handleCancel} color="primary">
+						Cancel
+					</Button>
 					<Button
 						type="submit"
 						variant="contained"
@@ -103,11 +111,12 @@ export default function PageProductForm() {
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	const onSubmit = (values: FormikValues) => {
+		const method = id ? 'put' : 'post';
 		const formattedValues = ProductSchema.cast(values);
 		const productToSave = id ? { ...ProductSchema.cast(formattedValues), id } : formattedValues;
-		axios
-			.put(`${API_PATHS.bff}/product`, productToSave)
-			.then(() => history.push('/admin/products'));
+		axios[method](`${API_PATHS.products}`, productToSave).then(() =>
+			history.push('/admin/products'),
+		);
 	};
 
 	useEffect(() => {
@@ -115,7 +124,7 @@ export default function PageProductForm() {
 			setIsLoading(false);
 			return;
 		}
-		axios.get(`${API_PATHS.bff}/product/${id}`).then((res) => {
+		axios.get(`${API_PATHS.products}/${id}`).then((res) => {
 			setProduct(res.data);
 			setIsLoading(false);
 		});
