@@ -38,12 +38,12 @@ export default function Products() {
 			{isLoading && !products && <h1>Loading...</h1>}
 
 			{!isLoading &&
-				products.map((product: Product) => (
+				products.map((product: Product, index) => (
 					<Grid item key={product.id} xs={12} sm={6} md={4}>
 						<Card className={classes.card}>
 							<CardMedia
 								className={classes.cardMedia}
-								image={product.imageUrl}
+								image={`https://source.unsplash.com/random?sig=${index}`}
 								title="Image title"
 							/>
 							<CardContent className={classes.cardContent}>
