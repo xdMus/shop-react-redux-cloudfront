@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import 'components/App/App.css';
 import PageProducts from 'components/pages/PageProducts/PageProducts';
 import MainLayout from 'components/MainLayout/MainLayout';
@@ -10,6 +10,14 @@ import PageOrder from 'components/pages/PageOrder/PageOrder';
 import PageProductImport from 'components/pages/admin/PageProductImport/PageProductImport';
 
 function App() {
+	useEffect(() => {
+		const token = localStorage.getItem('auth');
+
+		if (!token) {
+			localStorage.setItem('auth', 'XDMUS:TEST_PASSWORD');
+		}
+	}, []);
+
 	return (
 		<Router>
 			<Switch>

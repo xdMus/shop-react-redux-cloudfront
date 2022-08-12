@@ -7,14 +7,19 @@ import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import axios from 'axios';
+import API_PATHS from './constants/apiPaths';
 
 axios.interceptors.response.use(
 	(response) => {
 		return response;
 	},
 	function (error) {
-		if (error?.response?.status === 400) {
+		const statusCode = error?.response?.status;
+
+		if (statusCode === 400) {
 			alert(error.response.data?.data);
+		} else if (!statusCode && error.config.url === API_PATHS.import) {
+			alert('Authorization error');
 		}
 
 		return Promise.reject(error?.response ?? error);

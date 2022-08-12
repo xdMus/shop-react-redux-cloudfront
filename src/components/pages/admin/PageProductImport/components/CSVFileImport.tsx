@@ -19,7 +19,6 @@ export default function CSVFileImport({ url, title }: CSVFileImportProps) {
 	const [file, setFile] = useState<any>();
 
 	const onFileChange = (e: any) => {
-		console.log(e);
 		let files = e.target.files || e.dataTransfer.files;
 		if (!files.length) return;
 		setFile(files.item(0));
@@ -31,13 +30,25 @@ export default function CSVFileImport({ url, title }: CSVFileImportProps) {
 
 	const uploadFile = async (e: any) => {
 		// Get the presigned URL
+		const token = localStorage.getItem('auth');
+		const headers = {};
+
+		if (!token) {
+			console.warn('Token is not defined in local storage. Please set `auth-token` value.');
+		} else {
+			// @ts-ignore
+			headers.Authorization = `Basic ${Buffer.from(token).toString('base64')}`;
+		}
+
 		const response = await axios({
+			headers,
 			method: 'GET',
 			url,
 			params: {
 				name: encodeURIComponent(file.name),
 			},
 		});
+
 		console.log('File to upload: ', file.name);
 		console.log('Uploading to: ', response.data);
 		const result = await fetch(response.data, {
